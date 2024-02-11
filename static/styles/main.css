@@ -1,0 +1,231 @@
+.nav-item {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.login-form {
+    width: 70%;
+    max-width: 700px;
+    margin: auto;
+    margin-top: 5rem;
+}
+
+.login-btn {
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.record .list-group {
+    width: 70%;
+    max-width: 700px;
+    margin: auto;
+    margin-top: 5rem;
+}
+
+.record .active {
+    background-color: #343A40;
+    border: #343A40;
+}
+
+.record .active label{
+    color: white;
+}
+
+.record .list-group-item:hover {
+    cursor: pointer;
+}
+
+.input-group-text {
+    background-color: #343A40;
+    color: white;
+    shadow: #343A40;
+}
+
+.modal-body .form-control:focus {
+    box-shadow: none;
+    border-color: #3b3b3b;
+    border-radius: 5px;
+}
+
+.custom-select:focus {
+    box-shadow: none;
+    border-color: #3b3b3b;
+}
+
+.date-container button {
+    height: 2.5rem;
+    padding-right: 4rem;
+    padding-left: 4rem;
+    background-color: #343A40;
+    border-color: #3b3b3b;
+}
+
+.date-container button:hover {
+    background-color: #1f1e1e;
+    border-color: #3b3b3b;
+}
+
+.date-container .row {
+    text-align: center;
+}
+
+.add-btn {
+    width: fit-content;
+    block-size: fit-content;
+    border-radius: 50%;
+    padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+    font-size: 1.5rem;
+    position: fixed;
+    right:    1.5rem;
+    bottom:   2rem;
+    background-color: #63b360;
+    border: none;
+
+}
+
+.add-rec-btn {
+    width: 45%;
+}
+
+.date-container .fa {
+    color: #343A40;
+}
+
+.calendar-ico {
+    background-color: white;
+}
+
+.calendar-ico {
+    background-color: white;
+}
+
+.amount .input-group-text {
+    background-color: white;
+    color: #343A40;
+}
+
+.modal-header {
+    background-color: #63b360;
+    border: none;
+}
+
+.modal-title {
+    color: white;
+}
+
+.modal-title .close span{
+    color: white;
+    background-color: white;
+}
+
+.modal-content {
+    border: none;
+}
+
+.record-show-title {
+    margin-top: 2.2rem;
+    text-align: center;
+    color: #343A40;
+}
+
+.record-show-title::after{
+    content: "";
+    display: block;
+    width: 5%;
+    height: 2px;
+    background-color: #343A40;
+    margin: auto;
+    margin-top: 1.2rem;
+}
+
+.record-show {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+.pagination {
+    margin-bottom: 2.5rem;
+}
+
+.record-show {
+    margin-top: 2rem;
+}
+
+.record-show .row {
+    width: 100%;
+    margin: auto;
+}
+
+.record-show .row .col {
+    text-align: center;
+}
+
+.record-show .row .col:first-child {
+    text-align: left;
+}
+
+.table-primary, .table-primary>td, .table-primary>th {
+    background-color: #fbfbfb;
+}
+
+.table-borderless > thead {
+    color: #343A40;
+}
+
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+    vertical-align: middle;
+}
+
+thead div:first-child {
+    margin-right: 1rem;
+}
+
+.table-borderless > tbody > tr > td {
+    border-bottom: solid 2px white;
+}
+
+.table-borderless > tbody > tr:last-child > td {
+    border: none;
+}
+
+.table-borderless > tbody > tr:first-child > td {
+    border-top: solid 2px white;
+}
+
+.day-total div{
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    .record-show-title::after{
+        width: 30%;
+    }
+
+}
+
+@media (max-width: 424px) {
+    .table {
+        font-size: 85%;
+    }
+
+    .table form button {
+        font-size: 90%;
+    }
+}
+
+@media (max-width: 378px) {
+    .hmTime {
+        display: none
+    }
+
+    .day-total div{
+        display: block;
+        width: 100%;
+    }
+}

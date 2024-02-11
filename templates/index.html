@@ -1,0 +1,177 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+{% if session["user_id"] %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"
+    integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA=="
+    crossorigin="anonymous"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"
+    integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg=="
+    crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link
+    href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css"
+    rel="stylesheet" />
+
+<!-- Add record -->
+<div class="list-group record">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-success btn-floating add-btn" data-toggle="modal"
+        data-target="#exampleModalCenter" style="z-index: 2">
+        <i class="fas fa-add"></i>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/record" method="post" id="add-form">
+                    <div class="modal-body">
+                        <div class="amount">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input name="amount" type="number" class="form-control"
+                                    aria-label="Amount (to the nearest dollar)" autofocus min="1" required>
+                            </div>
+                        </div>
+
+                        <label><b>Type:</b></label>
+                        <div class="input-group-append">
+                            <select class="custom-select" name="type" form="add-form">
+                                <option value="income" selected>Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+
+                        <br>
+
+                        <label><b>Category:</b></label>
+                        <div class="input-group-append">
+                            <select class="custom-select" name="category" form="add-form">
+                                <option selected disabled>Category</option>
+                                {% for item in categ_list %}
+                                <option value="{{ item.title }}">{{ item.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <br>
+
+                        <label><b>Date:</b></label>
+                        <div class="date-container">
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                        data-target="#datetimepicker2" name="date" required>
+                                    <div class="input-group-append" data-target="#datetimepicker2"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text calendar-ico"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success add-rec-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Show records -->
+<h2 class="record-show-title">Tansactions</h2>
+<div class="container record-show">
+    {% for i in range(0, transactions | length) %}
+    <div class="card record-show-item">
+        <table class="table-primary table-borderless">
+            <thead>
+                <tr class="table" style="width: 100%">
+                    <th scope="col" class="col-1" colspan="3">{{ transactions[i][0].time | format }}</th>
+                    <th scope="col" class="col-1" style="color: green"></th>
+                    <th scope="col" class="col-1 day-total" colspan="2" style="color: #db5151; text-align: right">
+                        <div style="color: #6bd182">{{ transactions[i][transactions[i] | length - 1].income | usd }}</div>
+                        <div style="color: #db5151">{{ transactions[i][transactions[i] | length - 1].expense | usd }}</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for j in range(0, transactions[i] | length - 1) %}
+                {% if transactions[i][j].type == 'income' %}
+                <tr class="table table-success">
+                    {% else %}
+                    <tr class="table table-danger">
+                        {% endif %}
+                        <td scope="col" class="col-1 align-middle hmTime" colspan="2">{{ transactions[i][j].time | time }}</td>
+                        <td scope="col" class="col-1 align-middle" style="text-align: center">{{ transactions[i][j].amount | usd }}</td>
+                        <td scope="col" class="col-1 align-middle" style="text-align: center" colspan="2">{{ transactions[i][j].category_title }}</td>
+                        <td scope="col" class="col-1 align-middle" style="text-align: right" colspan="2">
+                            <form action="/" method="post">
+                                <input name="id" hidden value="{{ transactions[i][j].id }}">
+                                <button type="submit" class="btn btn-outline-danger">delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    {% endfor %}
+</div>
+
+{% if pagination != "" %}
+<nav>
+    <ul class="pagination justify-content-center">
+            <li class="page-item page-item-back">
+                <a class="page-link" href="?page={{ pagination.previous_page }}">Previous</a>
+            </li>
+            <li class="page-item page-item-forward">
+                <a class="page-link" href="?page={{ pagination.next_page }}">Next</a>
+            </li>
+    </ul>
+</nav>
+{% endif %}
+
+<script>
+
+    $(function () {
+        $('#datetimepicker2').datetimepicker({
+            locale: 'ua',
+            focusOnShow: false,
+            buttons: {
+                showClose: true
+            },
+            format: 'DD/MM/YYYY HH:mm:ss',
+            widgetPositioning: {
+                horizontal: 'right',
+                vertical: 'top',
+            },
+        });
+    });
+
+</script>
+{% endif %}
+{% endblock %}
+
+{% block act %}
+"hm"
+{% endblock %}

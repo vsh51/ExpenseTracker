@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Expenses
+{% endblock %}
+
+{% block main %}
+{% if session["user_id"] %}
+<!-- Show records -->
+<h2 class="record-show-title">Expenses</h2>
+<div class="container record-show">
+    {% for intraDay in transactions %}
+        <div class="card record-show-item">
+            <table class="table-primary table-borderless">
+                <thead>
+                    <tr class="table" style="width: 100%">
+                        <th scope="col" class="col-1" colspan="3">{{ intraDay[0].time | format }}</th>
+                        <th scope="col" class="col-1"></th>
+                        <th scope="col" class="col-1" style="text-align: center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in intraDay %}
+                        <tr class="table table-danger">
+                        <td scope="col" class="col-1 align-middle">{{ transaction.time | time }}</td>
+                        <td scope="col" class="col-1 align-middle" colspan="2" style="text-align: center">{{ transaction.amount | usd }}</td>
+                        <td scope="col" class="col-1 align-middle" style="text-align: center" colspan="2">{{ transaction.category_title }}</td>
+                        <td scope="col" class="col-1 align-middle" style="text-align: right">
+                            <form action="/" method="post">
+                                <input name="id" hidden value="{{ transaction.id }}">
+                                <button type="submit" class="btn btn-outline-danger">delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+    {% endfor %}
+</div>
+
+{% if pagination != "" %}
+<nav>
+    <ul class="pagination justify-content-center">
+        <!-- <div class="row"> -->
+            <li class="page-item page-item-back">
+                <a class="page-link" href="?page={{ pagination.previous_page }}">Previous</a>
+            </li>
+            <li class="page-item page-item-forward">
+                <a class="page-link" href="?page={{ pagination.next_page }}">Next</a>
+            </li>
+        <!-- </div> -->
+    </ul>
+</nav>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block act %}
+"exp"
+{% endblock %}
