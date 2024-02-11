@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Stat
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/styles/statistics.css">
+<meta id="my-data" data-wexp="{{ weeklyPieDataExp }}" data-winc="{{ weeklyPieDataInc }}" data-ded="{{ dailyExpData }}">
+{% endblock %}
+
+{% block main %}
+
+<h2 class="record-show-title">Statistics</h2>
+<div class="main_container">
+    <div class="main_container__row">
+        <div class="pie-chart">
+            <h4>Exp. weekly distribution</h4>
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="pie-chart">
+            <h4>Inc. weekly distribution</h4>
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+    <div class="main_container__row">
+        <div class="line-chart">
+            <h4>Daily expenses: {{ dailyExpDataMonth }}</h4>
+            <canvas id="myChart3"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+    const ctx2 = document.getElementById('myChart2');
+    const ctx3 = document.getElementById('myChart3');
+
+    var weeklyPieDataExp = $('#my-data').data("wexp");
+    var weeklyPieDataInc = $('#my-data').data("winc");
+    var dailyExpData = $('#my-data').data("ded");
+
+    console.log(dailyExpData);
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(weeklyPieDataExp["labels"]),
+            datasets: [{
+                label: 'volume',
+                data: Object.values(weeklyPieDataExp["labels"]),
+                backgroundColor: weeklyPieDataExp["colors"],
+                hoverOffset: 4
+            }]
+        },
+    });
+
+    new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(weeklyPieDataInc["labels"]),
+            datasets: [{
+                label: 'volume',
+                data: Object.values(weeklyPieDataInc["labels"]),
+                backgroundColor: weeklyPieDataInc["colors"],
+                hoverOffset: 4
+            }]
+        },
+    });
+
+    new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: Object.keys(dailyExpData["data"]),
+            datasets: [{
+                label: 'volume',
+                data: Object.values(dailyExpData["data"]),
+                fill: false,
+                borderColor: 'rgb(219, 42, 84)',
+                tension: 0.1
+            }]
+        },
+    });
+</script>
+{% endblock %}
+
+{% block act %}
+"stat"
+{% endblock %}
